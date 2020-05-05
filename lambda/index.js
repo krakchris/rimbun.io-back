@@ -6,7 +6,7 @@ users.forEach(user=>{
         host,
         port,
         path,
-        body: {"name":"Tanveer","email":"tanveer13@yopmail.com","password":"sach4327","passwordConfirm":"sach4327","role":"admin"}
+        body: user
     }).then(res=>{
         console.log(res);
     }).catch(err=>{
