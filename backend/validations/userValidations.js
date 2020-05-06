@@ -7,7 +7,7 @@ const validateRequest = (schema, req, res, next) => {
     const validate = ajv.compile(schema);
     const valid = validate(data);
     if(valid)  return next();
-    return next(new AppError(401, 'fail', validationHelper.parseValidationErrors(validate.errors)), req, res, next);
+    return next(new AppError(401, 'error', validationHelper.parseValidationErrors(validate.errors)), req, res, next);
 };
 
 const validateSignUp = (req, res, next) => {
@@ -25,6 +25,19 @@ const validateSignUp = (req, res, next) => {
     validateRequest(schema, req, res, next);
 }
 
+const validateLogin = (req, res, next) => {
+    const schema = {
+        type: "object",
+        required: ["email", "password"],
+        properties: {
+            email: { type: "string" },
+            password: { type: "string" }
+        }
+    }
+    validateRequest(schema, req, res, next);
+}
+
 module.exports = {
-    validateSignUp
+    validateSignUp,
+    validateLogin
 }
