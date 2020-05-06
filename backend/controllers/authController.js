@@ -14,8 +14,55 @@ const createToken = id => {
     });
 };
 
+exports.login = async (req, res, next) => {
+    try {
+        const {
+            email,
+            password
+        } = req.body;
+
+        // 1) check if email and password exists
+        if (!email || !password) {
+            return next(new AppError(404, 'error', 'Please provide email or password'), req, res, next);
+        }
+
+        // 2) check if user exist and password is correct
+        const user = await User.findOne({
+            email
+        }).select('+password');
+
+        if (!user || !await user.correctPassword(password, user.password)) {
+            return next(new AppError(401, 'error', 'Email or Password is wrong'), req, res, next);
+        }
+
+        // 3) All correct, send jwt to client
+        const token = createToken(user.id);
+
+        // Remove the password from the output 
+        user.password = undefined;
+
+        res.status(200).json({
+            status: 'success',
+            token,
+            data: {
+                user
+            }
+        });
+
+    } catch (err) {
+        next(err);
+    }
+};
+
 exports.signup = async (req, res, next) => {
     try {
+        //check if email already exist
+        const isUserExist = await User.findOne({
+            email: req.body.email
+        });
+
+        if(isUserExist) return next(new AppError(409, 'error', 'Email already exist'), req, res, next);
+
         const user = await User.create({
             name: req.body.name,
             email: req.body.email,
@@ -50,7 +97,7 @@ exports.protect = async (req, res, next) => {
             token = req.headers.authorization.split(' ')[1];
         }
         if (!token) {
-            return next(new AppError(401, 'fail', 'You are not logged in! Please login in to continue'), req, res, next);
+            return next(new AppError(401, 'error', 'You are not logged in! Please login in to continue'), req, res, next);
         }
 
 
@@ -60,7 +107,7 @@ exports.protect = async (req, res, next) => {
         // 3) check if the user is exist (not deleted)
         const user = await User.findById(decode.id);
         if (!user) {
-            return next(new AppError(401, 'fail', 'This user is no longer exist'), req, res, next);
+            return next(new AppError(401, 'error', 'This user is no longer exist'), req, res, next);
         }
 
         req.user = user;
@@ -75,7 +122,7 @@ exports.protect = async (req, res, next) => {
 exports.restrictTo = (...roles) => {
     return (req, res, next) => {
         if (!roles.includes(req.user.role)) {
-            return next(new AppError(403, 'fail', 'You are not allowed to do this action'), req, res, next);
+            return next(new AppError(403, 'error', 'You are not allowed to do this action'), req, res, next);
         }
         next();
     };
