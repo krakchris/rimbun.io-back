@@ -39,7 +39,7 @@ app.use(xss());
 app.use(hpp());
 
 // Routes
-app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/user', userRoutes);
 
 // handle undefined Routes
 app.use('*', (req, res, next) => {
