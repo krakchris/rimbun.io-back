@@ -5,7 +5,9 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const cors = require('cors');
+const fileUpload = require('express-fileupload');
 const userRoutes = require('./routes/userRoutes');
+const masterData = require('./routes/masterDataRoutes')
 const globalErrHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
 const app = express();
@@ -25,6 +27,7 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 // Body parser, reading data from body into req.body
+app.use(fileUpload());
 app.use(express.json({
     limit: '15kb'
 }));
@@ -40,6 +43,7 @@ app.use(hpp());
 
 // Routes
 app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/masterData', masterData)
 
 // handle undefined Routes
 app.use('*', (req, res, next) => {
