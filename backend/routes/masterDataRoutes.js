@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { protect } = require('../controllers/authController');
-const { validateSignUp, validateLogin } = require('../validations/userValidations');
 const { validateMasterData } = require('../validations/masterDataValidations');
 const { restrictTo } = require('../controllers/authController');
 const { createOne } = require('../controllers/masterDataController');
