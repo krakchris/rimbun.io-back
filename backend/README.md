@@ -4,3 +4,5 @@
 • npm i
 
 • npm start
+
+• tagName => make it unique [db.masterData.createIndex({"tagName": 1},{"unique": true})]

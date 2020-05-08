@@ -26,8 +26,10 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
-// Body parser, reading data from body into req.body
+//parsing multi-party form data
 app.use(fileUpload());
+
+// Body parser, reading data from body into req.body
 app.use(express.json({
     limit: '15kb'
 }));
