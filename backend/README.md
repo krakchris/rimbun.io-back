@@ -6,6 +6,11 @@
 
 • npm start
 
-#Swagger
+• tagName => make it unique [db.masterData.createIndex({"tagName": 1},{"unique": true})]
 
+
+#Swagger
 • swagger url : "baseUrl:PORT"
+
+
+
