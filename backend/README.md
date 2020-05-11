@@ -8,4 +8,4 @@
 
 #Swagger
 
-• swagger url : "localhost:4000"
+• swagger url : "baseUrl:PORT"
