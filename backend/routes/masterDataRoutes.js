@@ -3,7 +3,7 @@ const router = express.Router();
 const { protect } = require('../controllers/authController');
 const { validateMasterData } = require('../validations/masterDataValidations');
 const { restrictTo } = require('../controllers/authController');
-const { createOne, getAll } = require('../controllers/masterDataController');
+const { createOne, getAll, getOne } = require('../controllers/masterDataController');
 // Protect all routes after this middleware
 router.use(protect);
 
@@ -15,4 +15,7 @@ router
     .route('/')
     .post(validateMasterData, createOne)
     .get(getAll);
+router
+    .route('/:id')
+    .get(getOne)
 module.exports = router;
