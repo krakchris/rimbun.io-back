@@ -14,10 +14,11 @@ const validateMap = (req, res, next) => {
     // Object.assign(req.body, validationHelper.getFile(req));
     const schema = {
         type: "object",
-        required: ["name", "config"],
+        required: ["name", "config", "master"],
         properties: {
             name: { type: "string" },
-            config: { type: "object" }
+            config: { type: "object" },
+            master: { type: "string"}
         }
     }
     validateRequest(schema, req, res, next);
