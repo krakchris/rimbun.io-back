@@ -7,7 +7,8 @@ const hpp = require('hpp');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const userRoutes = require('./routes/userRoutes');
-const masterData = require('./routes/masterDataRoutes')
+const masterDataRoutes = require('./routes/masterDataRoutes');
+const mapRoutes = require('./routes/mapRoutes');
 const globalErrHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
 const app = express();
@@ -58,7 +59,8 @@ app.use(hpp());
 
 // Routes
 app.use('/api/v1/user', userRoutes);
-app.use('/api/v1/masterData', masterData)
+app.use('/api/v1/masterData', masterDataRoutes)
+app.use('/api/v1/map', mapRoutes)
 
 // handle undefined Routes
 app.use('*', (req, res, next) => {
