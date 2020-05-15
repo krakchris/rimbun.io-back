@@ -29,7 +29,10 @@ const mapSchema = new Schema({
         default: false
     }
 });
-
+mapSchema.pre('save', async function (next) {
+    this.userIds = [this.creator];
+    next();
+});
 const Map = mongoose.model('Map', mapSchema);
 Map.shareMap = ({params, body}) => {
     return map.findOneAndUpdate(

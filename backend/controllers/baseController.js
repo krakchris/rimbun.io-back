@@ -66,7 +66,9 @@ exports.createOne = Model => async (req, res, next) => {
 
 exports.getOne = Model => async (req, res, next) => {
     try {
-        const doc = await Model.findById(req.params.id);
+        const { filter: {include} = {} } = req.query;
+        const doc = await Model.findById(req.params.id)
+                    .populate(include);
 
         if (!doc) {
             return next(new AppError(404, 'error', 'No document found with that id'), req, res, next);
@@ -85,8 +87,8 @@ exports.getOne = Model => async (req, res, next) => {
 
 exports.getAll = Model => async (req, res, next) => {
     try {
-        const { where = {}, filter = {} } = req.query;
-        const features = new APIFeatures(Model.find(where, filter), req.query)
+        const { where = {}, filter: {fields} = {} } = req.query;
+        const features = new APIFeatures(Model.find(where, fields), req.query)
             .sort()
             .paginate();
 
