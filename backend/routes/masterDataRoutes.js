@@ -3,6 +3,7 @@ const router = express.Router();
 const { protect, restrictTo } = require('../controllers/authController');
 const { validateMasterData } = require('../validations/masterDataValidations');
 const { createOne, getAll, getOne } = require('../controllers/masterDataController');
+const { prepareQuery } = require('../services/preparedata');
 // Protect all routes after this middleware
 router.use(protect);
 
@@ -11,9 +12,14 @@ router.use(restrictTo('admin'));
 
 router
     .route('/')
-    .post(validateMasterData, createOne)
-    .get(getAll);
+    .post(validateMasterData, createOne);
+
+router
+    .route('/getAllTags')
+    .get(prepareQuery, getAll);
+
 router
     .route('/:id')
-    .get(getOne)
+    .get(getOne);
+
 module.exports = router;
