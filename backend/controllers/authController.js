@@ -4,7 +4,7 @@ const {
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const AppError = require('../utils/appError');
-
+const { logger } = require('../core/logger');
 
 const createToken = id => {
     return jwt.sign({
@@ -57,6 +57,8 @@ exports.login = async (req, res, next) => {
 exports.signup = async (req, res, next) => {
     try {
         //check if email already exist
+        logger.info(` [ signup ] Called with ${JSON.stringify(req.body)} `);
+
         const isUserExist = await User.findOne({
             email: req.body.email
         });
@@ -84,6 +86,7 @@ exports.signup = async (req, res, next) => {
         });
 
     } catch (err) {
+        logger.error(` [ signup ] error : ${JSON.stringify(err)} `);
         next(err);
     }
 
