@@ -3,7 +3,7 @@ const router = express.Router();
 const { signup, login, protect, restrictTo } = require('./../controllers/authController');
 const { validateSignUp, validateLogin } = require('../validations/userValidations');
 const { getAllUsers } = require('../controllers/userController');
-const { prepareQuery } = require('../services/preparedata');
+const { prepareQuery } = require('../services/prepareData');
 router.post('/', validateSignUp , signup);
 router.post('/login', validateLogin, login);
 

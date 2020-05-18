@@ -3,7 +3,7 @@ const router = express.Router();
 const { protect, restrictTo } = require('../controllers/authController');
 const { validateMasterData } = require('../validations/masterDataValidations');
 const { createOne, getAll, getOne } = require('../controllers/masterDataController');
-const { prepareQuery } = require('../services/preparedata');
+const { prepareQuery } = require('../services/prepareData');
 // Protect all routes after this middleware
 router.use(protect);
 
