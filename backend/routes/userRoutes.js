@@ -3,7 +3,7 @@ const router = express.Router();
 const { signup, login, protect, restrictTo } = require('./../controllers/authController');
 const { validateSignUp, validateLogin } = require('../validations/userValidations');
 const { getAllUsers } = require('../controllers/userController');
-
+const { prepareQuery } = require('../services/preparedata');
 router.post('/', validateSignUp , signup);
 router.post('/login', validateLogin, login);
 
@@ -14,7 +14,7 @@ router.use(protect);
 router.use(restrictTo('admin'));
 
 router
-    .route('/')
-    .get(getAllUsers);
+    .route('/getAllUsers')
+    .get(prepareQuery, getAllUsers);
 
 module.exports = router;
