@@ -44,6 +44,8 @@ const userSchema = new mongoose.Schema({
         default: true,
         select: false
     }
+},{
+    timestamps: true
 });
 
 // encrypt the password using 'bcryptjs'

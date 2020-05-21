@@ -29,6 +29,8 @@ const masterDataSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     }
+},{
+    timestamps: true
 });
 
 const MasterData = mongoose.model('MasterData', masterDataSchema);

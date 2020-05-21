@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const APIFeatures = require('../utils/apiFeatures');
 
 const mapSchema = new Schema({
     name: {
@@ -13,13 +14,13 @@ const mapSchema = new Schema({
     },
     config: {
         type: Object,
-        required: [true, 'Config can not be empty']
+        default: null
     },
-    master: {
+    master: [{
         type: Schema.Types.ObjectId,
         ref: 'MasterData',
         required: [true, 'Master can not be empty']
-    },
+    }],
     userIds: [{ 
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -28,6 +29,8 @@ const mapSchema = new Schema({
         type: Boolean,
         default: false
     }
+},{
+    timestamps: true
 });
 mapSchema.pre('save', async function (next) {
     this.userIds = [this.creator];
@@ -35,9 +38,18 @@ mapSchema.pre('save', async function (next) {
 });
 const Map = mongoose.model('Map', mapSchema);
 Map.shareMap = ({params, body}) => {
-    return map.findOneAndUpdate(
+    return Map.findOneAndUpdate(
         { "_id": params.id },
         { "$addToSet": { userIds: body.userIds }}
     )
+}
+Map.findUserAssocMap = (query) => {
+    return new Promise((resolve)=>{
+        const { where = {}, filter: {fields} = {} } = query;
+        const features = new APIFeatures(Map.find(where, fields).lean(), query)
+            .sort()
+            .paginate();
+        resolve(features.query);
+    });
 }
 module.exports = Map;

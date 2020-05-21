@@ -4,7 +4,8 @@ const querySchema = {
         return {
             where: {
                 role: data.role || 'official'
-            }
+            },
+            page: data.page
         };
     },
 
@@ -14,7 +15,8 @@ const querySchema = {
                 fields: {
                     tagName: 1
                 }
-            }
+            },
+            page: data.page
         };
     },
 
@@ -30,7 +32,9 @@ const querySchema = {
         return {
             where: {
                 userIds: data.userId
-            }
+            },
+            page: data.page,
+            sort: '-createdAt'
         };
     },
 
