@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-
+const APIFeatures = require('../utils/apiFeatures');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -70,4 +70,13 @@ userSchema.methods.correctPassword = async function (typedPassword, originalPass
 };
 
 const User = mongoose.model('User', userSchema);
+User.getUserListing = (query) => {
+    return new Promise((resolve)=>{
+        const { where = {}, filter: {fields} = {} } = query;
+        const features = new APIFeatures(User.find(where, fields).lean(), query)
+            .sort()
+            .paginate();
+        resolve(features.query);
+    });
+}
 module.exports = User;

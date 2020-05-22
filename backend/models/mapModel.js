@@ -43,13 +43,21 @@ Map.shareMap = ({params, body}) => {
         { "$addToSet": { userIds: body.userIds }}
     )
 }
-Map.findUserAssocMap = (query) => {
+Map.findMap = (query) => {
     return new Promise((resolve)=>{
         const { where = {}, filter: {fields} = {} } = query;
         const features = new APIFeatures(Map.find(where, fields).lean(), query)
             .sort()
             .paginate();
-        resolve(features.query);
+        resolve(features.query || []);
+    });
+}
+
+Map.findOneMap = (query) => {
+    return new Promise((resolve)=>{
+        const { where = {}, filter: {fields} = {} } = query;
+        const features = Map.findOne(where, fields).lean()
+        resolve(features || {});
     });
 }
 module.exports = Map;

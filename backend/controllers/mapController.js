@@ -30,15 +30,23 @@ const appendIsShare = (list) => {
     });
 }
 
-const getUser = async (token) => {
-    const { id: userId } = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-    return user.findById(userId);
+const getUser = async (id) => {
+    return user.findById(id);
+}
+
+const getUserId = (token) => {
+    return promisify(jwt.verify)(token, process.env.JWT_SECRET);
 }
 
 exports.findUserAssocMap = async (req, res, next) => {
     try{
-        const mapList = await map.findUserAssocMap(req.query);
-        const role = (await getUser(req.headers.authorization.split(' ')[1])).role;
+        const token = req.headers.authorization.split(' ')[1];
+        const { id: userId } = await getUserId(token);
+        req.query.where = Object.assign({},{userIds: userId});
+        const [ mapList, {role} ] = await Promise.all([
+            map.findMap(req.query),
+            getUser(userId)
+        ]);
         const doc = role == 'admin' ? appendIsShare(mapList) : mapList;
         res.status(200).json({
             status: 'success',

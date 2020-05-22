@@ -7,16 +7,16 @@ const { prepareQuery } = require('../services/prepareData');
 // Protect all routes after this middleware
 router.use(protect);
 
+router
+    .route('/getUserAssocMap')
+    .get(prepareQuery, findUserAssocMap);
+    
 // Only admin have permission to access for the below APIs 
 router.use(restrictTo('admin'));
 
 router
     .route('/')
-    .post(validateMap, createOne)
-
-router
-    .route('/getUserAssocMap')
-    .get(prepareQuery, findUserAssocMap);  
+    .post(validateMap, createOne);  
     
 router
     .route('/getMapByMasterId')

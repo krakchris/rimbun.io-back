@@ -5,7 +5,8 @@ const querySchema = {
             where: {
                 role: data.role || 'official'
             },
-            page: data.page
+            page: data.page,
+            mapId: data.mapId
         };
     },
 
@@ -44,7 +45,21 @@ const querySchema = {
                 master: data.masterId
             }
         };
+    },
+
+    "mapAssocUsers": (data) => {
+        return {
+            where: {
+                _id: data.mapId
+            },
+            filter: {
+                fields: {
+                    userIds: 1
+                }
+            }
+        }
     }
+
 };
 
 const prepareQuery = (req, res, next) => {
@@ -54,5 +69,6 @@ const prepareQuery = (req, res, next) => {
 };
 
 module.exports = {
-    prepareQuery
+    prepareQuery,
+    querySchema
 };
