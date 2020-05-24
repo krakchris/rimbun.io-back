@@ -27,7 +27,7 @@ const mapSchema = new Schema({
     }],
     active: {
         type: Boolean,
-        default: false
+        default: true
     }
 },{
     timestamps: true

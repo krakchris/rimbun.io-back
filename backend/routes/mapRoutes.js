@@ -32,6 +32,6 @@ router
 
 router
     .route('/share/:id')
-    .post(validateShareMap, shareMap)
+    .post(validateShareMap, shareMap);
     
 module.exports = router;

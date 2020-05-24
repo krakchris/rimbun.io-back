@@ -10,7 +10,7 @@ const querySchema = {
         };
     },
 
-    "getAllTags": () => {
+    "getAllTags": (data) => {
         return {
             filter: {
                 fields: {
