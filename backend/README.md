@@ -1,12 +1,14 @@
 # rimbumBackend
 
-• copy .env.example & rename it .env
+• Create asset/log directory inside backend
+
+• Copy .env.example & rename it .env
 
 • npm i
 
 • npm start
 
-• tagName => make it unique [db.masterData.createIndex({"tagName": 1},{"unique": true})]
+• TagName => make it unique [db.masterData.createIndex({"tagName": 1},{"unique": true})]
 
 
 #Swagger

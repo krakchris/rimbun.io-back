@@ -2,7 +2,15 @@ const express = require('express');
 const router = express.Router();
 const { protect, restrictTo } = require('../controllers/authController');
 const { validateMap, validateShareMap } = require('../validations/mapValidations');
-const { createOne, getAll, updateOne, getOne, shareMap, findUserAssocMap } = require('../controllers/mapController');
+const { 
+    createOne, 
+    getAll, 
+    updateOne, 
+    getOne, 
+    shareMap, 
+    deleteOne,
+    findUserAssocMap 
+} = require('../controllers/mapController');
 const { prepareQuery } = require('../services/prepareData');
 // Protect all routes after this middleware
 router.use(protect);
@@ -16,7 +24,8 @@ router.use(restrictTo('admin'));
 
 router
     .route('/')
-    .post(validateMap, createOne);  
+    .post(validateMap, createOne)
+    .delete(deleteOne);
     
 router
     .route('/getMapByMasterId')

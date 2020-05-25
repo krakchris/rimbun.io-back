@@ -11,6 +11,7 @@ exports.createOne = base.createOne(map);
 exports.getAll = base.getAll(map);
 exports.updateOne = base.updateOne(map);
 exports.getOne = base.getOne(map);  
+exports.deleteOne = base.deleteOne(map);
 exports.shareMap = async (req, res, next) => {
     try{
         await map.shareMap(req);
