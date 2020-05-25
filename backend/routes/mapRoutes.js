@@ -25,7 +25,6 @@ router.use(restrictTo('admin'));
 router
     .route('/')
     .post(validateMap, createOne)
-    .delete(deleteOne);
     
 router
     .route('/getMapByMasterId')
@@ -33,7 +32,8 @@ router
 
 router
     .route('/:id')
-    .patch(updateOne);
+    .patch(updateOne)
+    .delete(deleteOne);
 
 router
     .route('/getMap/:id')
