@@ -38,9 +38,9 @@ mapSchema.pre('save', async function (next) {
 });
 const Map = mongoose.model('Map', mapSchema);
 Map.shareMap = ({params, body}) => {
-    return Map.findOneAndUpdate(
-        { "_id": params.id },
-        { "$addToSet": { userIds: body.userIds }}
+    return Map.findByIdAndUpdate(
+        params.id,
+        body
     )
 }
 Map.findMap = (query) => {

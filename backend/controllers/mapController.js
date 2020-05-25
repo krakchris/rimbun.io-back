@@ -12,8 +12,16 @@ exports.getAll = base.getAll(map);
 exports.updateOne = base.updateOne(map);
 exports.getOne = base.getOne(map);  
 exports.deleteOne = base.deleteOne(map);
+
+const getUserId = (token) => {
+    return promisify(jwt.verify)(token, process.env.JWT_SECRET);
+}
+
 exports.shareMap = async (req, res, next) => {
     try{
+        const token = req.headers.authorization.split(' ')[1];
+        const { id: userId } = await getUserId(token);
+        req.body.userIds = [userId, ...req.body.userIds];
         await map.shareMap(req);
         res.status(201).json({
             status: 'success',
@@ -33,10 +41,6 @@ const appendIsShare = (list) => {
 
 const getUser = async (id) => {
     return user.findById(id);
-}
-
-const getUserId = (token) => {
-    return promisify(jwt.verify)(token, process.env.JWT_SECRET);
 }
 
 exports.findUserAssocMap = async (req, res, next) => {
