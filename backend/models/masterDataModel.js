@@ -13,13 +13,18 @@ const masterDataSchema = new mongoose.Schema({
         ref: 'User',
         required: [true, 'Creator can not be empty']
     },
-    csv: {
+    file: {
         type: String,
-        required: [true, 'Csv can not be empty']
+        required: [true, 'File can not be empty']
+    },
+    fileType: {
+        type: String,
+        required: [true, 'File name can not be empty']
     },
     config: {
         type: Object,
-        required: [true, 'Config can not be empty']
+        required: [true, 'Config can not be empty'],
+        default: {}
     },
     label: {
         type: String,
@@ -29,7 +34,12 @@ const masterDataSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     }
+},{
+    timestamps: true
 });
 
 const MasterData = mongoose.model('MasterData', masterDataSchema);
+MasterData.addMasterData = ({body}) => {
+    return MasterData.create(body);
+}
 module.exports = MasterData;

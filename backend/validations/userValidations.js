@@ -2,6 +2,7 @@ const validationHelper = require('./validationHelper');
 const Ajv = require('ajv');
 const ajv = new Ajv({allErrors: true});
 const AppError = require('../utils/appError');
+
 const validateRequest = (schema, req, res, next) => {
     const { body: data } = req;
     const validate = ajv.compile(schema);

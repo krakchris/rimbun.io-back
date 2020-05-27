@@ -13,7 +13,7 @@ const globalErrHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
 const app = express();
 const { allowedOrigins } = require('./constant')
-
+const errMsg = require('./core/errorMessage');
 // Allow Cross-Origin requests
 app.use(cors({
     origin: function(origin, callback){
@@ -69,7 +69,7 @@ app.use('/api/v1/map', mapRoutes)
 
 // handle undefined Routes
 app.use('*', (req, res, next) => {
-    const err = new AppError(404, 'error', 'undefined route');
+    const err = new AppError(404, 'error', errMsg['undefinedRoute']);
     next(err, req, res, next);
 });
 

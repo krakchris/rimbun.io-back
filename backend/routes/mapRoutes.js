@@ -2,21 +2,29 @@ const express = require('express');
 const router = express.Router();
 const { protect, restrictTo } = require('../controllers/authController');
 const { validateMap, validateShareMap } = require('../validations/mapValidations');
-const { createOne, getAll, updateOne, getOne, shareMap, getUserAssociatedMaps } = require('../controllers/mapController');
+const { 
+    createOne, 
+    getAll, 
+    updateOne, 
+    getOne, 
+    shareMap, 
+    deleteOne,
+    findUserAssocMap 
+} = require('../controllers/mapController');
 const { prepareQuery } = require('../services/prepareData');
 // Protect all routes after this middleware
 router.use(protect);
 
+router
+    .route('/getUserAssocMap')
+    .get(prepareQuery, findUserAssocMap);
+    
 // Only admin have permission to access for the below APIs 
 router.use(restrictTo('admin'));
 
 router
     .route('/')
     .post(validateMap, createOne)
-
-router
-    .route('/getUserAssocMap')
-    .get(prepareQuery, getAll);  
     
 router
     .route('/getMapByMasterId')
@@ -24,7 +32,8 @@ router
 
 router
     .route('/:id')
-    .patch(updateOne);
+    .patch(updateOne)
+    .delete(deleteOne);
 
 router
     .route('/getMap/:id')
@@ -32,6 +41,6 @@ router
 
 router
     .route('/share/:id')
-    .post(validateShareMap, shareMap)
+    .post(validateShareMap, shareMap);
     
 module.exports = router;

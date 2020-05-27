@@ -14,9 +14,9 @@ const validateMasterData = (req, res, next) => {
     Object.assign(req.body, validationHelper.getFile(req));
     const schema = {
         type: "object",
-        required: ["csv", "tagName", "config", "label"],
+        required: ["file", "tagName", "config", "label"],
         properties: {
-            csv: { type: "string" },
+            file: { type: "string" },
             tagName: { type: "string" },
             config: { type: "object" },
             label: { type: "string" },

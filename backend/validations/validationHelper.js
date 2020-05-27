@@ -1,3 +1,15 @@
+const masterDataParser = {
+    "csv": (content) => {
+        return content.data.toString('utf8');
+    },
+    "json": (content) => {
+        return JSON.stringify(JSON.parse(content.data));
+    },
+    "geojson": (content) => {
+        return JSON.stringify(JSON.parse(content.data));
+    }
+};
+
 const validation = {};
 
 validation.parseValidationErrors = (errors) => {
@@ -9,12 +21,21 @@ validation.parseValidationErrors = (errors) => {
     }
 };
 
-validation.getFile = ({files}) => {
+const extractFileType = (fileName) => {
     try{
-        let { csv, config } = files;
-        csv = csv.data.toString('utf8');
-        config = config ? JSON.parse(files.config.data) : {};
-        return { csv, config };
+        return fileName.split('.')[1]
+    }catch(error){
+        return 'csv';
+    }
+}
+
+validation.getFile = ({files, body}) => {
+    try{
+        let { file, config } = files;
+        const fileType = extractFileType(file.name);
+        file = masterDataParser[fileType] ? masterDataParser[fileType](file) : '';
+        config = config ? JSON.parse(config.data) : body.config||{};
+        return { file, fileType, config };
     }catch(error){
         return {};
     }

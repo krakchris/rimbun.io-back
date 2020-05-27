@@ -4,17 +4,20 @@ const querySchema = {
         return {
             where: {
                 role: data.role || 'official'
-            }
+            },
+            page: data.page,
+            mapId: data.mapId
         };
     },
 
-    "getAllTags": () => {
+    "getAllTags": (data) => {
         return {
             filter: {
                 fields: {
                     tagName: 1
                 }
-            }
+            },
+            page: data.page
         };
     },
 
@@ -30,7 +33,9 @@ const querySchema = {
         return {
             where: {
                 userIds: data.userId
-            }
+            },
+            page: data.page,
+            sort: '-createdAt'
         };
     },
 
@@ -40,7 +45,21 @@ const querySchema = {
                 master: data.masterId
             }
         };
+    },
+
+    "mapAssocUsers": (data) => {
+        return {
+            where: {
+                _id: data.mapId
+            },
+            filter: {
+                fields: {
+                    userIds: 1
+                }
+            }
+        }
     }
+
 };
 
 const prepareQuery = (req, res, next) => {
@@ -50,5 +69,6 @@ const prepareQuery = (req, res, next) => {
 };
 
 module.exports = {
-    prepareQuery
+    prepareQuery,
+    querySchema
 };

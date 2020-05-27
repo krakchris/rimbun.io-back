@@ -6,7 +6,7 @@ dotenv.config({
 });
 
 process.on('uncaughtException', err => {
-    logger.error(`UNCAUGHT EXCEPTION!!! shutting down... : ${JSON.stringify(err)}`);
+    logger.error(`UNCAUGHT EXCEPTION!!! shutting down... : ${err.message}`);
     process.exit(1);
 });
 
