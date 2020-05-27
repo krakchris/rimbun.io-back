@@ -6,6 +6,7 @@ const {
     promisify
 } = require('util');
 const jwt = require('jsonwebtoken');
+const errMsg = require('../core/errorMessage');
 
 exports.createOne = base.createOne(map);
 exports.getAll = base.getAll(map);
@@ -28,7 +29,7 @@ exports.shareMap = async (req, res, next) => {
             data: null
         });
     }catch(error){
-        next(new AppError('424', 'error', 'Failed to share map'));
+        next(new AppError('424', 'error', errMsg['failedToShareMap']));
     }
 };
 
@@ -61,6 +62,6 @@ exports.findUserAssocMap = async (req, res, next) => {
             }
         });
     }catch(error){
-        next(new AppError('404', 'error', 'Failed to find maps'));
+        next(new AppError('404', 'error', errMsg['failedToFindMap']));
     }
 }

@@ -3,6 +3,8 @@ const Map = require('../models/mapModel');
 const base = require('./baseController');
 const AppError = require('../utils/appError');
 const { querySchema } = require('../services/prepareData');
+const errMsg = require('../core/errorMessage');
+
 exports.deleteMe = async (req, res, next) => {
     try {
         await User.findByIdAndUpdate(req.user.id, {
@@ -41,7 +43,7 @@ exports.getAllUsers = async (req, res, next) => {
             }
         });
     }catch(error){
-        next(new AppError('404', 'error', 'Failed to find maps'));
+        next(new AppError('404', 'error', errMsg['failedToFindMap']));
     }
 };
 exports.getUser = base.getOne(User);

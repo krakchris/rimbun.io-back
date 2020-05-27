@@ -14,7 +14,7 @@ const mapSchema = new Schema({
     },
     config: {
         type: Object,
-        default: null
+        default: {}
     },
     master: [{
         type: Schema.Types.ObjectId,
@@ -36,13 +36,16 @@ mapSchema.pre('save', async function (next) {
     this.userIds = [this.creator];
     next();
 });
+
 const Map = mongoose.model('Map', mapSchema);
+
 Map.shareMap = ({params, body}) => {
     return Map.findByIdAndUpdate(
         params.id,
         body
     )
 }
+
 Map.findMap = (query) => {
     return new Promise((resolve)=>{
         const { where = {}, filter: {fields} = {} } = query;
@@ -60,4 +63,5 @@ Map.findOneMap = (query) => {
         resolve(features || {});
     });
 }
+
 module.exports = Map;

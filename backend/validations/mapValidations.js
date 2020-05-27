@@ -11,7 +11,6 @@ const validateRequest = (schema, req, res, next) => {
 };
 
 const validateMap = (req, res, next) => {
-    // Object.assign(req.body, validationHelper.getFile(req));
     const schema = {
         type: "object",
         required: ["name", "master"],

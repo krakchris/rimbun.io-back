@@ -4,13 +4,14 @@ const {
     promisify
 } = require('util');
 const jwt = require('jsonwebtoken');
+const errMsg = require('../core/errorMessage');
 
 exports.deleteOne = Model => async (req, res, next) => {
     try {
         const doc = await Model.findByIdAndDelete(req.params.id);
 
         if (!doc) {
-            return next(new AppError(404, 'error', 'No document found with that id'), req, res, next);
+            return next(new AppError(404, 'error', errMsg['NoDocFound']), req, res, next);
         }
 
         res.status(204).json({
@@ -30,7 +31,7 @@ exports.updateOne = Model => async (req, res, next) => {
         });
 
         if (!doc) {
-            return next(new AppError(404, 'error', 'No document found with that id'), req, res, next);
+            return next(new AppError(404, 'error', errMsg['NoDocFound']), req, res, next);
         }
 
         res.status(200).json({
@@ -71,7 +72,7 @@ exports.getOne = Model => async (req, res, next) => {
                     .populate(include);
 
         if (!doc) {
-            return next(new AppError(404, 'error', 'No document found with that id'), req, res, next);
+            return next(new AppError(404, 'error', errMsg['NoDocFound']), req, res, next);
         }
 
         res.status(200).json({
