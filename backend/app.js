@@ -13,7 +13,7 @@ const globalErrHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
 const app = express();
 const { allowedOrigins } = require('./constant')
-const errMsg = require('./core/errorMessage');
+const errMsg = require('./messages/errorMessage');
 // Allow Cross-Origin requests
 app.use(cors({
     origin: function(origin, callback){
@@ -43,7 +43,7 @@ const limiter = rateLimit({
     windowMs: 60 * 60 * 1000,
     message: 'Too Many Request from this IP, please try again in an hour'
 });
-app.use('/api', limiter);
+process.env.NODE_ENVIROMMENT == 'production' &&  app.use('/api', limiter); 
 
 //parsing multi-party form data
 app.use(fileUpload());
