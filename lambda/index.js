@@ -1,6 +1,7 @@
 exports.handler = async (event) => {
     const { callAPI } = require('./httpCall');
-    const { createAdminUserApi, users } = require("./config.json");
+    const { users } = require("./config.json");
+    const { createAdminUserApi } = require("./constant");
     const { host, port, path } = createAdminUserApi;
     const promises = await Promise.all(users.map(user=>{
         return callAPI({
