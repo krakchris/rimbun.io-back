@@ -1,13 +1,13 @@
 {
     "createAdminUserApi": {
-        "host": "localhost",
-        "port": 4000,
-        "path": "/api/v1/users/signup"
+        "host": "ec2-54-196-69-114.compute-1.amazonaws.com",
+        "port": 8080,
+        "path": "/api/v1/user/"
     },
     "users": [
         {
             "name":"Tanveer",
-            "email":"tanveer11@yopmail.com",
+            "email":"tanveer12@yopmail.com",
             "password":"sach4327",
             "passwordConfirm":"sach4327",
             "role":"admin"

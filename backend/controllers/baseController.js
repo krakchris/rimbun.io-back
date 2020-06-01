@@ -14,7 +14,7 @@ exports.deleteOne = Model => async (req, res, next) => {
             return next(new AppError(404, 'error', errMsg['NoDocFound']), req, res, next);
         }
 
-        res.status(204).json({
+        res.status(200).json({
             status: 'success',
             data: null
         });
@@ -53,7 +53,7 @@ exports.createOne = Model => async (req, res, next) => {
         Object.assign(req.body, {creator});
         const doc = await Model.create(req.body);
 
-        res.status(201).json({
+        res.status(200).json({
             status: 'success',
             data: {
                 doc

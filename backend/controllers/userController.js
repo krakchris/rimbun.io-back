@@ -11,7 +11,7 @@ exports.deleteMe = async (req, res, next) => {
             active: false
         });
 
-        res.status(204).json({
+        res.status(200).json({
             status: 'success',
             data: null
         });

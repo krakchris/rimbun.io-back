@@ -24,7 +24,7 @@ exports.shareMap = async (req, res, next) => {
         const { id: userId } = await getUserId(token);
         req.body.userIds = [userId, ...req.body.userIds];
         await map.shareMap(req);
-        res.status(201).json({
+        res.status(200).json({
             status: 'success',
             data: null
         });

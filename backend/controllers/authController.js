@@ -75,7 +75,7 @@ exports.signup = async (req, res, next) => {
 
         user.password = undefined;
 
-        res.status(201).json({
+        res.status(200).json({
             status: 'success',
             token,
             data: {
