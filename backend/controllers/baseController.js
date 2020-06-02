@@ -94,7 +94,7 @@ exports.getAll = Model => async (req, res, next) => {
             .paginate();
 
         // const doc = await features.query;
-        const [doc, totalDoc] = await Promise.all([features.query, getTotalDocuments(Model, req.query)]);
+        const [doc, { length: totalDoc }] = await Promise.all([features.query, getTotalDocuments(Model, req.query)]);
         res.status(200).json({
             status: 'success',
             results: totalDoc,

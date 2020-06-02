@@ -5,7 +5,9 @@ const APIFeatures = require('../utils/apiFeatures');
 const mapSchema = new Schema({
     name: {
         type: String,
-        required: [true, 'Map name can not be empty']
+        required: [true, 'Map name can not be empty'],
+        unique: true,
+        index: true,
     },
     creator: { 
         type: Schema.Types.ObjectId,

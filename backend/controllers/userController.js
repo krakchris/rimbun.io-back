@@ -33,7 +33,7 @@ exports.getAllUsers = async (req, res, next) => {
     try{
         let userList = await User.getUserListing(req.query) || [];
         const { mapId } = req.query;
-        const totalDoc = await getTotalDocuments(User , req.query);
+        const { length: totalDoc } = await getTotalDocuments(User , req.query);
         const mapAssocUsers = await Map.findOneMap(querySchema['mapAssocUsers']({mapId})) || {};
         userList = appendIsMapShared(userList, mapAssocUsers);
         res.status(200).json({

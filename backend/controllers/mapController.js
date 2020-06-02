@@ -49,7 +49,7 @@ exports.findUserAssocMap = async (req, res, next) => {
         const token = req.headers.authorization.split(' ')[1];
         const { id: userId } = await getUserId(token);
         req.query.where = Object.assign({},{userIds: userId});
-        const [ mapList, {role}, totalDocument ] = await Promise.all([
+        const [ mapList, {role}, { length: totalDocument } ] = await Promise.all([
             map.findMap(req.query),
             getUser(userId),
             getTotalDocuments(map, req.query)
