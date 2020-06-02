@@ -34,7 +34,7 @@ validation.getFile = ({files, body}) => {
         let { file, config } = files;
         const fileType = extractFileType(file.name);
         file = masterDataParser[fileType] ? masterDataParser[fileType](file) : '';
-        config = config ? JSON.parse(config.data) : body.config||{};
+        config = config ? JSON.parse(config.data) : JSON.parse(body.config)||{};
         return { file, fileType, config };
     }catch(error){
         return {};
