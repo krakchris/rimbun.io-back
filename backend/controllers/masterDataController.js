@@ -5,7 +5,7 @@ const AppError = require('../utils/appError');
 const {
     promisify
 } = require('util');
-const errMsg = require('../core/errorMessage');
+const errMsg = require('../messages/errorMessage');
 
 const getUserId = (token) => {
     return promisify(jwt.verify)(token, process.env.JWT_SECRET);

@@ -1,7 +1,6 @@
 const http = require('http')
 module.exports.callAPI = (params) => {
     return new Promise((resolve, reject)=>{
-        
         var options = {
           'method': 'POST',
           'hostname': params.host,

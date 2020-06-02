@@ -4,8 +4,8 @@ const {
     promisify
 } = require('util');
 const jwt = require('jsonwebtoken');
-const errMsg = require('../core/errorMessage');
-
+const errMsg = require('../messages/errorMessage');
+const { getTotalDocuments } = require('../services/helpers');
 exports.deleteOne = Model => async (req, res, next) => {
     try {
         const doc = await Model.findByIdAndDelete(req.params.id);
@@ -93,11 +93,11 @@ exports.getAll = Model => async (req, res, next) => {
             .sort()
             .paginate();
 
-        const doc = await features.query;
-
+        // const doc = await features.query;
+        const [doc, totalDoc] = await Promise.all([features.query, getTotalDocuments(Model, req.query)]);
         res.status(200).json({
             status: 'success',
-            results: doc.length,
+            results: totalDoc,
             data: {
                 data: doc
             }
