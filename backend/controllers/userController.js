@@ -3,15 +3,15 @@ const Map = require('../models/mapModel');
 const base = require('./baseController');
 const AppError = require('../utils/appError');
 const { querySchema } = require('../services/prepareData');
-const errMsg = require('../core/errorMessage');
-
+const errMsg = require('../messages/errorMessage');
+const { getTotalDocuments } = require('../services/helpers');
 exports.deleteMe = async (req, res, next) => {
     try {
         await User.findByIdAndUpdate(req.user.id, {
             active: false
         });
 
-        res.status(200).json({
+        res.status(204).json({
             status: 'success',
             data: null
         });
@@ -33,11 +33,12 @@ exports.getAllUsers = async (req, res, next) => {
     try{
         let userList = await User.getUserListing(req.query) || [];
         const { mapId } = req.query;
+        const totalDoc = await getTotalDocuments(User , req.query);
         const mapAssocUsers = await Map.findOneMap(querySchema['mapAssocUsers']({mapId})) || {};
         userList = appendIsMapShared(userList, mapAssocUsers);
         res.status(200).json({
             status: 'success',
-            results: userList.length,
+            results: totalDoc,
             data: {
                 data: userList
             }

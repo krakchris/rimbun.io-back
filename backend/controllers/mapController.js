@@ -6,8 +6,8 @@ const {
     promisify
 } = require('util');
 const jwt = require('jsonwebtoken');
-const errMsg = require('../core/errorMessage');
-
+const errMsg = require('../messages/errorMessage');
+const { getTotalDocuments } = require('../services/helpers');
 exports.createOne = base.createOne(map);
 exports.getAll = base.getAll(map);
 exports.updateOne = base.updateOne(map);
@@ -24,7 +24,7 @@ exports.shareMap = async (req, res, next) => {
         const { id: userId } = await getUserId(token);
         req.body.userIds = [userId, ...req.body.userIds];
         await map.shareMap(req);
-        res.status(200).json({
+        res.status(201).json({
             status: 'success',
             data: null
         });
@@ -49,14 +49,15 @@ exports.findUserAssocMap = async (req, res, next) => {
         const token = req.headers.authorization.split(' ')[1];
         const { id: userId } = await getUserId(token);
         req.query.where = Object.assign({},{userIds: userId});
-        const [ mapList, {role} ] = await Promise.all([
+        const [ mapList, {role}, totalDocument ] = await Promise.all([
             map.findMap(req.query),
-            getUser(userId)
+            getUser(userId),
+            getTotalDocuments(map, req.query)
         ]);
         const doc = role == 'admin' ? appendIsShare(mapList) : mapList;
         res.status(200).json({
             status: 'success',
-            results: doc.length,
+            results: totalDocument,
             data: {
                 data: doc
             }

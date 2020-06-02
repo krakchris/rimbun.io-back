@@ -6,6 +6,7 @@ const querySchema = {
                 role: data.role || 'official'
             },
             page: data.page,
+            limit: data.limit,
             mapId: data.mapId
         };
     },
@@ -17,7 +18,8 @@ const querySchema = {
                     tagName: 1
                 }
             },
-            page: data.page
+            page: data.page,
+            limit: data.limit,
         };
     },
 
@@ -35,6 +37,7 @@ const querySchema = {
                 userIds: data.userId
             },
             page: data.page,
+            limit: data.limit,
             sort: '-createdAt'
         };
     },

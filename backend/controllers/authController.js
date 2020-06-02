@@ -4,7 +4,7 @@ const {
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const AppError = require('../utils/appError');
-const errMsg = require('../core/errorMessage');
+const errMsg = require('../messages/errorMessage');
 
 const createToken = id => {
     return jwt.sign({
@@ -75,7 +75,7 @@ exports.signup = async (req, res, next) => {
 
         user.password = undefined;
 
-        res.status(200).json({
+        res.status(201).json({
             status: 'success',
             token,
             data: {

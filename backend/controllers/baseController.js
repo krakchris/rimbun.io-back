@@ -4,8 +4,8 @@ const {
     promisify
 } = require('util');
 const jwt = require('jsonwebtoken');
-const errMsg = require('../core/errorMessage');
-
+const errMsg = require('../messages/errorMessage');
+const { getTotalDocuments } = require('../services/helpers');
 exports.deleteOne = Model => async (req, res, next) => {
     try {
         const doc = await Model.findByIdAndDelete(req.params.id);
@@ -14,7 +14,7 @@ exports.deleteOne = Model => async (req, res, next) => {
             return next(new AppError(404, 'error', errMsg['NoDocFound']), req, res, next);
         }
 
-        res.status(200).json({
+        res.status(204).json({
             status: 'success',
             data: null
         });
@@ -53,7 +53,7 @@ exports.createOne = Model => async (req, res, next) => {
         Object.assign(req.body, {creator});
         const doc = await Model.create(req.body);
 
-        res.status(200).json({
+        res.status(201).json({
             status: 'success',
             data: {
                 doc
@@ -93,11 +93,11 @@ exports.getAll = Model => async (req, res, next) => {
             .sort()
             .paginate();
 
-        const doc = await features.query;
-
+        // const doc = await features.query;
+        const [doc, totalDoc] = await Promise.all([features.query, getTotalDocuments(Model, req.query)]);
         res.status(200).json({
             status: 'success',
-            results: doc.length,
+            results: totalDoc,
             data: {
                 data: doc
             }
