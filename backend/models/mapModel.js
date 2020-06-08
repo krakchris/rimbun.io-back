@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require("mongoose-unique-validator");
 const Schema = mongoose.Schema;
 const APIFeatures = require('../utils/apiFeatures');
 
@@ -37,6 +38,10 @@ const mapSchema = new Schema({
 mapSchema.pre('save', async function (next) {
     this.userIds = [this.creator];
     next();
+});
+
+mapSchema.plugin(uniqueValidator, {
+    message: "Map {PATH} already exist."
 });
 
 const Map = mongoose.model('Map', mapSchema);
