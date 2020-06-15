@@ -2,12 +2,9 @@
 const AWS = require("aws-sdk");
 const cryptoRandomString = require("crypto-random-string");
 
-
-// Enter copied or downloaded access id and secret here
 const ID = process.env.BUCKET_ACCESS_ID;
 const SECRET = process.env.BUCKET_SECRET;
 
-// Enter the name of the bucket that you have created here
 const BUCKET_NAME = process.env.BUCKET_NAME;
 
 
@@ -18,19 +15,17 @@ const s3 = new AWS.S3({
 });
 
 
-
 const uploadFile = async (file) => {
     if (!file) return null;
 
-    // Read content from the file
     const fileContent = file.data;
     let fileName = cryptoRandomString({ length: 10 });
     fileName = `${fileName}.csv`;
 
-    // Setting up S3 upload parameters
+    
     const params = {
         Bucket: BUCKET_NAME,
-        Key: fileName, // File name you want to save as in S3
+        Key: fileName, // File name to save as in S3
         Body: fileContent
     };
 
@@ -44,6 +39,5 @@ const uploadFile = async (file) => {
 
 
 };
-
 
 module.exports = uploadFile;
