@@ -18,6 +18,10 @@ router.use(protect);
 router
     .route('/getUserAssocMap')
     .get(prepareQuery, findUserAssocMap);
+
+router
+    .route("/getMap/:id")
+    .get(prepareQuery, getOne);
     
 // Only admin have permission to access for the below APIs 
 router.use(restrictTo('admin'));
@@ -34,10 +38,6 @@ router
     .route('/:id')
     .patch(updateOne)
     .delete(deleteOne);
-
-router
-    .route('/getMap/:id')
-    .get(prepareQuery, getOne);
 
 router
     .route('/share/:id')
