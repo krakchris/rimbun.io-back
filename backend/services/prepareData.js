@@ -33,6 +33,11 @@ const querySchema = {
 
     "getUserAssocMap": (data) => {
         return {
+            filter: {
+                fields: {
+                    config: 0
+                }
+            },
             where: {
                 userIds: data.userId
             },
