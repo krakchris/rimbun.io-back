@@ -15,12 +15,12 @@ const s3 = new AWS.S3({
 });
 
 
-const uploadFile = async (file) => {
+const uploadFile = async (file, fileType) => {
     if (!file) return null;
 
     const fileContent = file.data;
     let fileName = cryptoRandomString({ length: 10 });
-    fileName = `${fileName}.csv`;
+    fileName = `${fileName}.${fileType}`;
 
     
     const params = {

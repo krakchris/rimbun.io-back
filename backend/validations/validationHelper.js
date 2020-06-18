@@ -23,7 +23,7 @@ validation.getFile = async ({files, body}) => {
     try{
         let { file, config } = files;
         const fileType = extractFileType(file.name);
-        file =  await uploadFile(file);
+        file = await uploadFile(file, fileType);
         config = config ? JSON.parse(config.data) : JSON.parse(body.config)||{};
         return { file, fileType, config };
     }catch(error){
