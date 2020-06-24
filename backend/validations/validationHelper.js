@@ -1,14 +1,4 @@
-const masterDataParser = {
-    "csv": (content) => {
-        return content.data.toString('utf8');
-    },
-    "json": (content) => {
-        return JSON.stringify(JSON.parse(content.data));
-    },
-    "geojson": (content) => {
-        return JSON.stringify(JSON.parse(content.data));
-    }
-};
+const uploadFile = require('../utils/upload');
 
 const validation = {};
 
@@ -29,15 +19,17 @@ const extractFileType = (fileName) => {
     }
 }
 
-validation.getFile = ({files, body}) => {
+validation.getFile = async ({files, body}) => {
     try{
         let { file, config } = files;
         const fileType = extractFileType(file.name);
-        file = masterDataParser[fileType] ? masterDataParser[fileType](file) : '';
+        file = await uploadFile(file, fileType);
         config = config ? JSON.parse(config.data) : JSON.parse(body.config)||{};
         return { file, fileType, config };
     }catch(error){
         return {};
     }
 }
+
+
 module.exports = validation;

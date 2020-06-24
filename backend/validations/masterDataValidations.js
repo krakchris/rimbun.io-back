@@ -10,8 +10,9 @@ const validateRequest = (schema, req, res, next) => {
     return next(new AppError(401, 'error', validationHelper.parseValidationErrors(validate.errors)), req, res, next);
 };
 
-const validateMasterData = (req, res, next) => {
-    Object.assign(req.body, validationHelper.getFile(req));
+const validateMasterData = async (req, res, next) => {
+    const params = await validationHelper.getFile(req);
+    Object.assign(req.body, params);
     const schema = {
         type: "object",
         required: ["file", "tagName", "config", "label"],

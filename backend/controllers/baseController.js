@@ -25,9 +25,10 @@ exports.deleteOne = Model => async (req, res, next) => {
 
 exports.updateOne = Model => async (req, res, next) => {
     try {
-        const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-            runValidators: true
+        const mapConfig = { config: req.body };
+        const doc = await Model.findByIdAndUpdate(req.params.id, mapConfig, {
+          new: true,
+          runValidators: true
         });
 
         if (!doc) {
