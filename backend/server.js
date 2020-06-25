@@ -15,18 +15,21 @@ const app = require('./app');
 const database = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
 
 // Connect the database
-mongoose.connect(database, {
+mongoose
+  .connect(database, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useFindAndModify: false
-}).then(con => {
-    logger.info('DB connection Successfully!');
+    useFindAndModify: false,
+    useUnifiedTopology: true
+  })
+  .then(con => {
+    logger.info("DB connection Successfully!");
     // Start the server
     const port = process.env.PORT;
     app.listen(port, () => {
-        logger.info(`Application is running on port ${port}`);
+      logger.info(`Application is running on port ${port}`);
     });
-});
+  });
 
 process.on('unhandledRejection', err => {
     logger.error(`UNCAUGHT EXCEPTION!!! shutting down... : ${JSON.stringify(err)}`);
