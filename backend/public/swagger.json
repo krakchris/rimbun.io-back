@@ -1,0 +1,91 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Rimbun API"
+    },
+    "host": "",
+    "basePath": "/api/v1",
+    "schemes": [
+      "http"
+    ],
+    "consumes": [
+      "application/json"
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "paths": {
+      "/user": {
+        "post": {
+          "summary": "Add a user into system",
+          "description": "",
+          "operationId": "addUser",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "The email of user to login",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "passwordConfirm": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/user/login": {
+        "post": {
+          "summary": "Logs user into the system",
+          "description": "",
+          "operationId": "loginUser",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "The email of user of login",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      }
+    }
+  }

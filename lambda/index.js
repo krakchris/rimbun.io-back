@@ -1,15 +1,19 @@
-const { callAPI } = require('./httpCall');
-const { createAdminUserApi, users } = require("./config.json");
-const { host, port, path } = createAdminUserApi;
-users.forEach(user=>{
-    callAPI({
-        host,
-        port,
-        path,
-        body: user
-    }).then(res=>{
-        console.log(res);
-    }).catch(err=>{
-        console.log(err);
-    });
-})
+exports.handler = async (event) => {
+    const { callAPI } = require('./httpCall');
+    const { users } = require("./config.json");
+    const { createAdminUserApi } = require("./constant");
+    const { host, port, path } = createAdminUserApi;
+    const promises = await Promise.all(users.map(user=>{
+        return callAPI({
+                    host,
+                    port,
+                    path,
+                    body: user
+                });
+    }));
+    const response = {
+        statusCode: 400,
+        body: JSON.stringify(promises),
+    };
+    return response;
+};

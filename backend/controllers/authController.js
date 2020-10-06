@@ -4,7 +4,7 @@ const {
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const AppError = require('../utils/appError');
-
+const errMsg = require('../messages/errorMessage');
 
 const createToken = id => {
     return jwt.sign({
@@ -23,7 +23,7 @@ exports.login = async (req, res, next) => {
 
         // 1) check if email and password exists
         if (!email || !password) {
-            return next(new AppError(404, 'error', 'Please provide email or password'), req, res, next);
+            return next(new AppError(404, 'error', errMsg['emailPasswordMissing']), req, res, next);
         }
 
         // 2) check if user exist and password is correct
@@ -32,7 +32,7 @@ exports.login = async (req, res, next) => {
         }).select('+password');
 
         if (!user || !await user.correctPassword(password, user.password)) {
-            return next(new AppError(401, 'error', 'Email or Password is wrong'), req, res, next);
+            return next(new AppError(401, 'error', errMsg['invalidEmailPass']), req, res, next);
         }
 
         // 3) All correct, send jwt to client
@@ -61,7 +61,7 @@ exports.signup = async (req, res, next) => {
             email: req.body.email
         });
 
-        if(isUserExist) return next(new AppError(409, 'error', 'Email already exist'), req, res, next);
+        if(isUserExist) return next(new AppError(409, 'error', errMsg['emailAlreadyExist']), req, res, next);
 
         const user = await User.create({
             name: req.body.name,
@@ -97,7 +97,7 @@ exports.protect = async (req, res, next) => {
             token = req.headers.authorization.split(' ')[1];
         }
         if (!token) {
-            return next(new AppError(401, 'error', 'You are not logged in! Please login in to continue'), req, res, next);
+            return next(new AppError(401, 'error', errMsg['notLoggegIn']), req, res, next);
         }
 
 
@@ -107,7 +107,7 @@ exports.protect = async (req, res, next) => {
         // 3) check if the user is exist (not deleted)
         const user = await User.findById(decode.id);
         if (!user) {
-            return next(new AppError(401, 'error', 'This user is no longer exist'), req, res, next);
+            return next(new AppError(401, 'error', errMsg['userNoLong']), req, res, next);
         }
 
         req.user = user;
@@ -122,7 +122,7 @@ exports.protect = async (req, res, next) => {
 exports.restrictTo = (...roles) => {
     return (req, res, next) => {
         if (!roles.includes(req.user.role)) {
-            return next(new AppError(403, 'error', 'You are not allowed to do this action'), req, res, next);
+            return next(new AppError(403, 'error', errMsg['notAllowed']), req, res, next);
         }
         next();
     };

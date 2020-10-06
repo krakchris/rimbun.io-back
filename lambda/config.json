@@ -1,13 +1,8 @@
 {
-    "createAdminUserApi": {
-        "host": "localhost",
-        "port": 4000,
-        "path": "/api/v1/users/signup"
-    },
     "users": [
         {
             "name":"Tanveer",
-            "email":"tanveer11@yopmail.com",
+            "email":"tanveer12@yopmail.com",
             "password":"sach4327",
             "passwordConfirm":"sach4327",
             "role":"admin"

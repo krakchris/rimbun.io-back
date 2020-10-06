@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-
+const APIFeatures = require('../utils/apiFeatures');
 
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Please fill your name']
+        required: [true, 'Please fill your name'],
+        lowercase: true
     },
     email: {
         type: String,
@@ -14,7 +15,6 @@ const userSchema = new mongoose.Schema({
         unique: true,
         lowercase: true,
         validate: [validator.isEmail, ' Please provide a valid email']
-
     },
     password: {
         type: String,
@@ -44,6 +44,8 @@ const userSchema = new mongoose.Schema({
         default: true,
         select: false
     }
+},{
+    timestamps: true
 });
 
 // encrypt the password using 'bcryptjs'
@@ -68,4 +70,13 @@ userSchema.methods.correctPassword = async function (typedPassword, originalPass
 };
 
 const User = mongoose.model('User', userSchema);
+User.getUserListing = (query) => {
+    return new Promise((resolve)=>{
+        const { where = {}, filter: {fields} = {} } = query;
+        const features = new APIFeatures(User.find(where, fields).lean(), query)
+            .sort()
+            .paginate();
+        resolve(features.query);
+    });
+}
 module.exports = User;
